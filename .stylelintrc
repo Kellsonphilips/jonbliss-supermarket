@@ -1,0 +1,14 @@
+{
+    "extends": "stylelint-config-standard",
+    "rules": {
+        "indentation": 2,
+        "string-quotes": "double"
+    },
+    "ignoreFiles": [
+       "**/*.js",
+       "**/*.jsx",
+       "**/*.ts",
+       "**/*.tsx",
+       "**/*.md"
+    ]
+}
