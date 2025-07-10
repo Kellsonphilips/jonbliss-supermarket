@@ -134,13 +134,13 @@ jonbliss-supermarket/
    ```
 
 3. **Start the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
 
 4. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)

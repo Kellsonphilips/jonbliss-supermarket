@@ -1,257 +1,115 @@
-// Supermarket data and utilities
-const supermarketData = {
-  "Cereals": [
-    {
-      "name": "Kellogg's Corn Flakes",
-      "price": "₦1,200",
-      "size": "500g",
-      "weight_or_volume": "500g",
-      "quantity": 50,
-      "category": "Cereals"
-    },
-    {
-      "name": "Quaker Oats",
-      "price": "₦800",
-      "size": "400g",
-      "weight_or_volume": "400g",
-      "quantity": 75,
-      "category": "Cereals"
-    },
-    {
-      "name": "Golden Morn",
-      "price": "₦950",
-      "size": "450g",
-      "weight_or_volume": "450g",
-      "quantity": 60,
-      "category": "Cereals"
-    }
-  ],
-  "Beverages": [
-    {
-      "name": "Coca Cola",
-      "price": "₦150",
-      "size": "330ml",
-      "weight_or_volume": "330ml",
-      "quantity": 200,
-      "category": "Beverages"
-    },
-    {
-      "name": "Pepsi",
-      "price": "₦140",
-      "size": "330ml",
-      "weight_or_volume": "330ml",
-      "quantity": 180,
-      "category": "Beverages"
-    },
-    {
-      "name": "Sprite",
-      "price": "₦130",
-      "size": "330ml",
-      "weight_or_volume": "330ml",
-      "quantity": 150,
-      "category": "Beverages"
-    }
-  ],
-  "Snacks": [
-    {
-      "name": "Lay's Potato Chips",
-      "price": "₦200",
-      "size": "150g",
-      "weight_or_volume": "150g",
-      "quantity": 100,
-      "category": "Snacks"
-    },
-    {
-      "name": "Doritos Nacho Cheese",
-      "price": "₦250",
-      "size": "180g",
-      "weight_or_volume": "180g",
-      "quantity": 80,
-      "category": "Snacks"
-    },
-    {
-      "name": "Cheetos",
-      "price": "₦180",
-      "size": "120g",
-      "weight_or_volume": "120g",
-      "quantity": 120,
-      "category": "Snacks"
-    }
-  ],
-  "Household": [
-    {
-      "name": "Dettol Antiseptic",
-      "price": "₦350",
-      "size": "550ml",
-      "weight_or_volume": "550ml",
-      "quantity": 45,
-      "category": "Household"
-    },
-    {
-      "name": "Vim Dishwashing Liquid",
-      "price": "₦280",
-      "size": "500ml",
-      "weight_or_volume": "500ml",
-      "quantity": 60,
-      "category": "Household"
-    },
-    {
-      "name": "Ariel Detergent",
-      "price": "₦450",
-      "size": "1kg",
-      "weight_or_volume": "1kg",
-      "quantity": 40,
-      "category": "Household"
-    }
-  ],
-  "Personal Care": [
-    {
-      "name": "Colgate Toothpaste",
-      "price": "₦220",
-      "size": "100g",
-      "weight_or_volume": "100g",
-      "quantity": 90,
-      "category": "Personal Care"
-    },
-    {
-      "name": "Dove Soap",
-      "price": "₦180",
-      "size": "100g",
-      "weight_or_volume": "100g",
-      "quantity": 110,
-      "category": "Personal Care"
-    },
-    {
-      "name": "Head & Shoulders Shampoo",
-      "price": "₦650",
-      "size": "400ml",
-      "weight_or_volume": "400ml",
-      "quantity": 55,
-      "category": "Personal Care"
-    }
-  ],
-  "Drinks": {
-    "Wines": [
-      {
-        "name": "Red Wine Merlot",
-        "price": "₦2,500",
-        "size": "750ml",
-        "weight_or_volume": "750ml",
-        "quantity": 25,
-        "category": "Drinks",
-        "subcategory": "Wines"
-      },
-      {
-        "name": "White Wine Chardonnay",
-        "price": "₦2,800",
-        "size": "750ml",
-        "weight_or_volume": "750ml",
-        "quantity": 20,
-        "category": "Drinks",
-        "subcategory": "Wines"
-      }
-    ],
-    "Whiskey": [
-      {
-        "name": "Jack Daniel's",
-        "price": "₦4,500",
-        "size": "750ml",
-        "weight_or_volume": "750ml",
-        "quantity": 15,
-        "category": "Drinks",
-        "subcategory": "Whiskey"
-      },
-      {
-        "name": "Johnnie Walker Red Label",
-        "price": "₦3,800",
-        "size": "750ml",
-        "weight_or_volume": "750ml",
-        "quantity": 18,
-        "category": "Drinks",
-        "subcategory": "Whiskey"
-      }
-    ],
-    "Tequila": [
-      {
-        "name": "Jose Cuervo Gold",
-        "price": "₦3,200",
-        "size": "750ml",
-        "weight_or_volume": "750ml",
-        "quantity": 12,
-        "category": "Drinks",
-        "subcategory": "Tequila"
-      }
-    ],
-    "Rum": [
-      {
-        "name": "Bacardi White Rum",
-        "price": "₦2,900",
-        "size": "750ml",
-        "weight_or_volume": "750ml",
-        "quantity": 22,
-        "category": "Drinks",
-        "subcategory": "Rum"
-      }
-    ]
+// Check if we're in a browser environment
+const isBrowser = typeof window !== 'undefined';
+
+// Import store data only in browser environment
+let getSupermarketItems;
+if (isBrowser) {
+  try {
+    const storeModule = require('../store/data/supermarketItems.js');
+    getSupermarketItems = storeModule.getSupermarketItems;
+  } catch (error) {
+    console.error('Error loading supermarket items:', error);
+    getSupermarketItems = () => ({});
   }
-};
-
-// Utility functions
-export function getSupermarketData() {
-  return supermarketData;
+} else {
+  // Server-side fallback
+  getSupermarketItems = () => ({});
 }
 
-export function getAllCategories(data = supermarketData) {
-  if (!data) return [];
-  return Object.keys(data).filter(category => category !== 'Drinks');
-}
-
-export function getSubcategories(data = supermarketData, category) {
-  if (!data || !data[category] || typeof data[category] !== 'object') return [];
+/**
+ * Get items by category
+ * @param {string} category - The category name to filter by
+ * @param {string} subcategory - Optional subcategory for nested categories like Drinks
+ * @returns {Array} Array of items in the specified category
+ */
+export function getItemsByCategory(category, subcategory = null) {
+  if (!isBrowser) return [];
   
-  if (category === 'Drinks') {
-    return Object.keys(data[category]);
+  const items = getSupermarketItems();
+  
+  if (subcategory && items[category] && items[category][subcategory]) {
+    return items[category][subcategory] || [];
+  }
+  
+  return items[category] || [];
+}
+
+/**
+ * Get all categories
+ * @returns {Array} Array of all available categories
+ */
+export function getAllCategories() {
+  if (!isBrowser) return [];
+  
+  const items = getSupermarketItems();
+  return Object.keys(items);
+}
+
+/**
+ * Get subcategories for a specific category
+ * @param {string} category - The category name
+ * @returns {Array} Array of subcategories or empty array if none
+ */
+export function getSubcategories(category) {
+  if (!isBrowser) return [];
+  
+  const items = getSupermarketItems();
+  const categoryData = items[category];
+  
+  if (categoryData && typeof categoryData === 'object' && !Array.isArray(categoryData)) {
+    return Object.keys(categoryData);
   }
   
   return [];
 }
 
-export function getItemsByCategory(data = supermarketData, category, subcategory = null) {
-  if (!data || !data[category]) return [];
+/**
+ * Get all drinks items (combines all drink subcategories)
+ * @returns {Array} Array of all drink items
+ */
+export function getAllDrinks() {
+  if (!isBrowser) return [];
   
-  if (category === 'Drinks') {
-    if (subcategory && data[category][subcategory]) {
-      return data[category][subcategory];
+  const items = getSupermarketItems();
+  const drinks = items.Drinks || {};
+  const allDrinks = [];
+  
+  Object.values(drinks).forEach(subcategory => {
+    if (Array.isArray(subcategory)) {
+      allDrinks.push(...subcategory);
     }
-    // Return all drinks if no subcategory specified
-    return Object.values(data[category]).flat();
-  }
+  });
   
-  return data[category] || [];
+  return allDrinks;
 }
 
-export function searchItems(data = supermarketData, query) {
-  if (!data || !query) return [];
+/**
+ * Search items by name
+ * @param {string} searchTerm - The search term to look for in item names
+ * @returns {Array} Array of items matching the search term
+ */
+export function searchItems(searchTerm) {
+  if (!isBrowser) return [];
   
+  const items = getSupermarketItems();
   const results = [];
-  const searchTerm = query.toLowerCase();
   
-  // Search in regular categories
-  Object.keys(data).forEach(category => {
-    if (category === 'Drinks') {
-      // Search in drinks subcategories
-      Object.values(data[category]).forEach(items => {
-        items.forEach(item => {
-          if (item.name.toLowerCase().includes(searchTerm)) {
-            results.push(item);
-          }
-        });
-      });
-    } else {
-      // Search in regular categories
-      data[category].forEach(item => {
-        if (item.name.toLowerCase().includes(searchTerm)) {
+  Object.values(items).forEach(categoryItems => {
+    if (Array.isArray(categoryItems)) {
+      categoryItems.forEach(item => {
+        if (item.name.toLowerCase().includes(searchTerm.toLowerCase())) {
           results.push(item);
+        }
+      });
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          subcategoryItems.forEach(item => {
+            if (item.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+              results.push(item);
+            }
+          });
         }
       });
     }
@@ -260,26 +118,36 @@ export function searchItems(data = supermarketData, query) {
   return results;
 }
 
-export function getItemsByPriceRange(data = supermarketData, min, max) {
-  if (!data) return [];
+/**
+ * Get items by price range
+ * @param {number} minPrice - Minimum price
+ * @param {number} maxPrice - Maximum price
+ * @returns {Array} Array of items within the price range
+ */
+export function getItemsByPriceRange(minPrice, maxPrice) {
+  if (!isBrowser) return [];
   
+  const items = getSupermarketItems();
   const results = [];
   
-  Object.keys(data).forEach(category => {
-    if (category === 'Drinks') {
-      Object.values(data[category]).forEach(items => {
-        items.forEach(item => {
-          const price = parseInt(item.price.replace('₦', '').replace(',', ''));
-          if (price >= min && price <= max) {
-            results.push(item);
-          }
-        });
-      });
-    } else {
-      data[category].forEach(item => {
+  Object.values(items).forEach(categoryItems => {
+    if (Array.isArray(categoryItems)) {
+      categoryItems.forEach(item => {
         const price = parseInt(item.price.replace('₦', '').replace(',', ''));
-        if (price >= min && price <= max) {
+        if (price >= minPrice && price <= maxPrice) {
           results.push(item);
+        }
+      });
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          subcategoryItems.forEach(item => {
+            const price = parseInt(item.price.replace('₦', '').replace(',', ''));
+            if (price >= minPrice && price <= maxPrice) {
+              results.push(item);
+            }
+          });
         }
       });
     }
@@ -288,25 +156,33 @@ export function getItemsByPriceRange(data = supermarketData, min, max) {
   return results;
 }
 
-export function getItemsBySize(data = supermarketData, size) {
-  if (!data || !size) return [];
+/**
+ * Get items by size
+ * @param {string} size - The size to filter by (Small, Medium, Large, Family Pack, etc.)
+ * @returns {Array} Array of items with the specified size
+ */
+export function getItemsBySize(size) {
+  if (!isBrowser) return [];
   
+  const items = getSupermarketItems();
   const results = [];
-  const targetSize = size.toLowerCase();
   
-  Object.keys(data).forEach(category => {
-    if (category === 'Drinks') {
-      Object.values(data[category]).forEach(items => {
-        items.forEach(item => {
-          if (item.size.toLowerCase() === targetSize) {
-            results.push(item);
-          }
-        });
-      });
-    } else {
-      data[category].forEach(item => {
-        if (item.size.toLowerCase() === targetSize) {
+  Object.values(items).forEach(categoryItems => {
+    if (Array.isArray(categoryItems)) {
+      categoryItems.forEach(item => {
+        if (item.size.toLowerCase() === size.toLowerCase()) {
           results.push(item);
+        }
+      });
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          subcategoryItems.forEach(item => {
+            if (item.size.toLowerCase() === size.toLowerCase()) {
+              results.push(item);
+            }
+          });
         }
       });
     }
@@ -315,18 +191,88 @@ export function getItemsBySize(data = supermarketData, size) {
   return results;
 }
 
-export function getItemsSortedByPrice(data = supermarketData, order = 'asc') {
-  if (!data) return [];
+/**
+ * Get low stock items (quantity less than specified threshold)
+ * @param {number} threshold - The quantity threshold (default: 20)
+ * @returns {Array} Array of items with low stock
+ */
+export function getLowStockItems(threshold = 20) {
+  if (!isBrowser) return [];
   
+  const items = getSupermarketItems();
+  const results = [];
+  
+  Object.values(items).forEach(categoryItems => {
+    if (Array.isArray(categoryItems)) {
+      categoryItems.forEach(item => {
+        if ((item.stock || 0) < threshold) {
+          results.push(item);
+        }
+      });
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          subcategoryItems.forEach(item => {
+            if ((item.stock || 0) < threshold) {
+              results.push(item);
+            }
+          });
+        }
+      });
+    }
+  });
+  
+  return results;
+}
+
+/**
+ * Get total inventory count
+ * @returns {number} Total number of items in inventory
+ */
+export function getTotalInventoryCount() {
+  if (!isBrowser) return 0;
+  
+  const items = getSupermarketItems();
+  let total = 0;
+  
+  Object.values(items).forEach(categoryItems => {
+    if (Array.isArray(categoryItems)) {
+      total += categoryItems.length;
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          total += subcategoryItems.length;
+        }
+      });
+    }
+  });
+  
+  return total;
+}
+
+/**
+ * Get items sorted by price
+ * @param {string} order - Sort order ('asc' or 'desc')
+ * @returns {Array} Array of items sorted by price
+ */
+export function getItemsSortedByPrice(order = 'asc') {
+  if (!isBrowser) return [];
+  
+  const items = getSupermarketItems();
   const allItems = [];
   
-  Object.keys(data).forEach(category => {
-    if (category === 'Drinks') {
-      Object.values(data[category]).forEach(items => {
-        allItems.push(...items);
+  Object.values(items).forEach(categoryItems => {
+    if (Array.isArray(categoryItems)) {
+      allItems.push(...categoryItems);
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          allItems.push(...subcategoryItems);
+        }
       });
-    } else {
-      allItems.push(...data[category]);
     }
   });
   
@@ -342,29 +288,309 @@ export function getItemsSortedByPrice(data = supermarketData, order = 'asc') {
   });
 }
 
-export function getItemsSortedByQuantity(data = supermarketData, order = 'asc') {
-  if (!data) return [];
+/**
+ * Get items sorted by quantity
+ * @param {string} order - Sort order ('asc' or 'desc')
+ * @returns {Array} Array of items sorted by quantity
+ */
+export function getItemsSortedByQuantity(order = 'desc') {
+  if (!isBrowser) return [];
   
+  const items = getSupermarketItems();
   const allItems = [];
   
-  Object.keys(data).forEach(category => {
-    if (category === 'Drinks') {
-      Object.values(data[category]).forEach(items => {
-        allItems.push(...items);
+  Object.values(items).forEach(categoryItems => {
+    if (Array.isArray(categoryItems)) {
+      allItems.push(...categoryItems);
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          allItems.push(...subcategoryItems);
+        }
       });
-    } else {
-      allItems.push(...data[category]);
     }
   });
   
   return allItems.sort((a, b) => {
     if (order === 'asc') {
-      return a.quantity - b.quantity;
+      return (a.stock || 0) - (b.stock || 0);
     } else {
-      return b.quantity - a.quantity;
+      return (b.stock || 0) - (a.stock || 0);
     }
   });
 }
 
-// Export the data for direct use if needed
-export { supermarketData };
+/**
+ * Get items by exact name match
+ * @param {string} name - The exact name to search for
+ * @returns {Array} Array of items with exact name match
+ */
+export function getItemsByName(name) {
+  if (!isBrowser) return [];
+  
+  const items = getSupermarketItems();
+  const results = [];
+  
+  Object.values(items).forEach(categoryItems => {
+    if (Array.isArray(categoryItems)) {
+      categoryItems.forEach(item => {
+        if (item.name.toLowerCase() === name.toLowerCase()) {
+          results.push(item);
+        }
+      });
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          subcategoryItems.forEach(item => {
+            if (item.name.toLowerCase() === name.toLowerCase()) {
+              results.push(item);
+            }
+          });
+        }
+      });
+    }
+  });
+  
+  return results;
+}
+
+/**
+ * Get items by weight or volume
+ * @param {string} weightOrVolume - The weight or volume to filter by
+ * @returns {Array} Array of items with the specified weight or volume
+ */
+export function getItemsByWeightOrVolume(weightOrVolume) {
+  if (!isBrowser) return [];
+  
+  const items = getSupermarketItems();
+  const results = [];
+  
+  Object.values(items).forEach(categoryItems => {
+    if (Array.isArray(categoryItems)) {
+      categoryItems.forEach(item => {
+        if (item.weight_or_volume && item.weight_or_volume.toLowerCase() === weightOrVolume.toLowerCase()) {
+          results.push(item);
+        }
+      });
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          subcategoryItems.forEach(item => {
+            if (item.weight_or_volume && item.weight_or_volume.toLowerCase() === weightOrVolume.toLowerCase()) {
+              results.push(item);
+            }
+          });
+        }
+      });
+    }
+  });
+  
+  return results;
+}
+
+/**
+ * Get category statistics
+ * @returns {Object} Object containing statistics for each category
+ */
+export function getCategoryStats() {
+  if (!isBrowser) return {};
+  
+  const items = getSupermarketItems();
+  const stats = {};
+  
+  Object.entries(items).forEach(([category, categoryItems]) => {
+    if (Array.isArray(categoryItems)) {
+      stats[category] = {
+        itemCount: categoryItems.length,
+        totalQuantity: categoryItems.reduce((sum, item) => sum + (item.stock || 0), 0),
+        averagePrice: categoryItems.reduce((sum, item) => {
+          const price = parseInt(item.price.replace('₦', '').replace(',', ''));
+          return sum + price;
+        }, 0) / categoryItems.length
+      };
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      let totalItems = 0;
+      let totalQuantity = 0;
+      let totalPrice = 0;
+      
+      Object.values(categoryItems).forEach(subcategoryItems => {
+        if (Array.isArray(subcategoryItems)) {
+          totalItems += subcategoryItems.length;
+          subcategoryItems.forEach(item => {
+            totalQuantity += (item.stock || 0);
+            totalPrice += parseInt(item.price.replace('₦', '').replace(',', ''));
+          });
+        }
+      });
+      
+      stats[category] = {
+        itemCount: totalItems,
+        totalQuantity: totalQuantity,
+        averagePrice: totalItems > 0 ? totalPrice / totalItems : 0
+      };
+    }
+  });
+  
+  return stats;
+}
+
+/**
+ * Get all items flattened into a single array
+ * @returns {Array} Array of all items across all categories
+ */
+export function getAllItemsFlattened() {
+  if (!isBrowser) return [];
+  
+  const items = getSupermarketItems();
+  const allItems = [];
+  
+  Object.entries(items).forEach(([category, categoryItems]) => {
+    if (Array.isArray(categoryItems)) {
+      categoryItems.forEach(item => {
+        allItems.push({
+          ...item,
+          category: category
+        });
+      });
+    } else if (typeof categoryItems === 'object') {
+      // Handle nested categories like Drinks
+      Object.entries(categoryItems).forEach(([subcategory, subcategoryItems]) => {
+        if (Array.isArray(subcategoryItems)) {
+          subcategoryItems.forEach(item => {
+            allItems.push({
+              ...item,
+              category: category,
+              subcategory: subcategory
+            });
+          });
+        }
+      });
+    }
+  });
+  
+  return allItems;
+}
+
+/**
+ * Get items by multiple filters
+ * @param {Object} filters - Object containing filter criteria
+ * @returns {Array} Array of items matching all filters
+ */
+export function getItemsByFilters(filters = {}) {
+  if (!isBrowser) return [];
+  
+  let items = getAllItemsFlattened();
+  
+  if (filters.category) {
+    items = items.filter(item => item.category === filters.category);
+  }
+  
+  if (filters.subcategory) {
+    items = items.filter(item => item.subcategory === filters.subcategory);
+  }
+  
+  if (filters.minPrice) {
+    items = items.filter(item => {
+      const price = parseInt(item.price.replace('₦', '').replace(',', ''));
+      return price >= filters.minPrice;
+    });
+  }
+  
+  if (filters.maxPrice) {
+    items = items.filter(item => {
+      const price = parseInt(item.price.replace('₦', '').replace(',', ''));
+      return price <= filters.maxPrice;
+    });
+  }
+  
+  if (filters.size) {
+    items = items.filter(item => item.size.toLowerCase() === filters.size.toLowerCase());
+  }
+  
+  if (filters.searchTerm) {
+    items = items.filter(item => 
+      item.name.toLowerCase().includes(filters.searchTerm.toLowerCase())
+    );
+  }
+  
+  if (filters.inStock) {
+    items = items.filter(item => (item.stock || 0) > 0);
+  }
+  
+  return items;
+}
+
+/**
+ * Get grouped items by baseName (one representative per group)
+ * @param {string|null} category - Optional category to filter by
+ * @returns {Array} Array of representative items, one per baseName
+ */
+export function getGroupedItemsByBaseName(category = null) {
+  if (!isBrowser) return [];
+  const items = getSupermarketItems();
+  let allItems = [];
+  if (category && items[category]) {
+    if (Array.isArray(items[category])) {
+      allItems = items[category];
+    } else if (typeof items[category] === 'object') {
+      // Handle nested categories
+      Object.values(items[category]).forEach(subcat => {
+        if (Array.isArray(subcat)) allItems.push(...subcat);
+      });
+    }
+  } else {
+    // All categories
+    Object.values(items).forEach(catItems => {
+      if (Array.isArray(catItems)) {
+        allItems.push(...catItems);
+      } else if (typeof catItems === 'object') {
+        Object.values(catItems).forEach(subcat => {
+          if (Array.isArray(subcat)) allItems.push(...subcat);
+        });
+      }
+    });
+  }
+  const grouped = {};
+  allItems.forEach(item => {
+    if (item.baseName && !grouped[item.baseName]) {
+      grouped[item.baseName] = item;
+    }
+  });
+  return Object.values(grouped);
+}
+
+/**
+ * Get all varieties for a given baseName
+ * @param {string} baseName - The baseName to search for
+ * @param {string|null} category - Optional category to filter by
+ * @returns {Array} Array of items with the given baseName
+ */
+export function getVarietiesByBaseName(baseName, category = null) {
+  if (!isBrowser) return [];
+  const items = getSupermarketItems();
+  let allItems = [];
+  if (category && items[category]) {
+    if (Array.isArray(items[category])) {
+      allItems = items[category];
+    } else if (typeof items[category] === 'object') {
+      Object.values(items[category]).forEach(subcat => {
+        if (Array.isArray(subcat)) allItems.push(...subcat);
+      });
+    }
+  } else {
+    Object.values(items).forEach(catItems => {
+      if (Array.isArray(catItems)) {
+        allItems.push(...catItems);
+      } else if (typeof catItems === 'object') {
+        Object.values(catItems).forEach(subcat => {
+          if (Array.isArray(subcat)) allItems.push(...subcat);
+        });
+      }
+    });
+  }
+  return allItems.filter(item => item.baseName && item.baseName.toLowerCase() === baseName.toLowerCase());
+}

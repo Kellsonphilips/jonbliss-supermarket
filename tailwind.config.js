@@ -1,11 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './frontend/pages/**/*.{js,ts,jsx,tsx}',
-    './frontend/components/**/*.{js,ts,jsx,tsx}',
-    './frontend/utils/**/*.{js,ts,jsx,tsx}',
-    './frontend/context/**/*.{js,ts,jsx,tsx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './frontend/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -17,7 +15,18 @@ module.exports = {
         'jonbliss-yellow-dark': '#ca8a04',
         'jonbliss-yellow-light': '#facc15',
         'red-orange': '#FF4500',
-        primary: '#FF4500',
+        'primary': '#FF4500',
+        // Social Media Brand Colors
+        'google-blue': '#4285F4',
+        'facebook-blue': '#1877F2',
+        'facebook-hover': '#166FE5',
+        'apple-black': '#000000',
+        'twitter-blue': '#1DA1F2',
+        'twitter-hover': '#1A91DA',
+        'github-dark': '#24292E',
+        'github-hover': '#1F2328',
+        'microsoft-blue': '#00A4EF',
+        'microsoft-hover': '#0098DB',
       },
       screens: {
         'xs': '400px',

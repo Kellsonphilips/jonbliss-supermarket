@@ -1,11 +1,27 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
+  :root {
+    /* Social Media Brand Colors */
+    --google-blue: #4285F4;
+    --facebook-blue: #1877F2;
+    --facebook-hover: #166FE5;
+    --apple-black: #000000;
+    --twitter-blue: #1DA1F2;
+    --twitter-hover: #1A91DA;
+    --github-dark: #24292E;
+    --github-hover: #1F2328;
+    --microsoft-blue: #00A4EF;
+    --microsoft-hover: #0098DB;
+  }
+
   html {
     scroll-behavior: smooth;
   }
-  
-  body {
+
+body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -40,7 +56,7 @@
 /* Custom component styles */
 @layer components {
   .btn-primary {
-    @apply bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium;
+    @apply bg-primary text-white px-4 py-2 rounded-lg hover:bg-red-orange transition-colors duration-200 font-medium;
   }
 
   .btn-secondary {
@@ -48,11 +64,11 @@
   }
 
   .btn-outline {
-    @apply border-2 border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-600 hover:text-white transition-colors duration-200 font-medium;
+    @apply border-2 border-primary text-primary px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition-colors duration-200 font-medium;
   }
 
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent;
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
   }
 
   .card {
@@ -78,17 +94,11 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
+
+  /* Custom color utilities are now defined in tailwind.config.js */
 }
 
-/* Jonbliss brand colors */
-:root {
-  --jonbliss-green: #16a34a;
-  --jonbliss-green-dark: #15803d;
-  --jonbliss-green-light: #22c55e;
-  --jonbliss-yellow: #eab308;
-  --jonbliss-yellow-dark: #ca8a04;
-  --jonbliss-yellow-light: #facc15;
-}
+/* Jonbliss brand colors are now defined in tailwind.config.js */
 
 /* Animation classes */
 .fade-in {
@@ -119,6 +129,44 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+/* Slideshow animations */
+.animate-fade-in {
+  animation: fadeInSlide 1s ease-out;
+}
+
+.animate-fade-in-delay {
+  animation: fadeInSlide 1s ease-out 0.3s both;
+}
+
+.animate-fade-in-delay-2 {
+  animation: fadeInSlide 1s ease-out 0.6s both;
+}
+
+.animate-fade-in-delay-3 {
+  animation: fadeInSlide 1s ease-out 0.9s both;
+}
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slideshow slide transition */
+.slide-transition {
+  transition: opacity 1s ease-in-out;
+}
+
+/* Slideshow progress bar animation */
+.progress-bar {
+  transition: width 5s linear;
 }
 
 /* Loading spinner */
