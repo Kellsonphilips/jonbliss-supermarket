@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function HeroSlideshow() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -13,42 +14,48 @@ export default function HeroSlideshow() {
       title: "Fresh Groceries Delivered",
       subtitle: "Quality products at your doorstep",
       image: "/first.png",
-      cta: "Shop Now"
+      cta: "Shop Now",
+      href: "/products"
     },
     {
       id: 2,
       title: "Best Prices Guaranteed",
       subtitle: "Competitive prices on all your favorites",
       image: "/vareity2.jpeg",
-      cta: "View Deals"
+      cta: "View Deals",
+      href: "/products?sort=deals"
     },
     {
       id: 3,
       title: "Wide Selection",
       subtitle: "Over 1000+ products to choose from",
       image: "/wide-range.jpeg",
-      cta: "Explore Products"
+      cta: "Explore Products",
+      href: "/products"
     },
     {
       id: 4,
       title: "Fast Delivery",
       subtitle: "Same-day delivery available",
       image: "/vareity1.jpg",
-      cta: "Order Now"
+      cta: "Order Now",
+      href: "/checkout"
     },
     {
       id: 5,
       title: "Quality Assured",
       subtitle: "Fresh and authentic products",
       image: "/fruits.webp",
-      cta: "Learn More"
+      cta: "Learn More",
+      href: "/about"
     },
     {
       id: 6,
       title: "Exceptional Service",
       subtitle: "We're here when you need us",
       image: "/exceptional-service.jpg",
-      cta: "Contact Us"
+      cta: "Contact Us",
+      href: "/contact"
     }
   ];
 
@@ -113,9 +120,14 @@ export default function HeroSlideshow() {
               <p className="text-xl md:text-2xl mb-8 animate-fade-in-delay">
                 {slide.subtitle}
               </p>
-              <button className="bg-primary text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-red-700 transition duration-300 animate-fade-in-delay-2">
-                {slide.cta}
-              </button>
+              <Link href={slide.href}>
+                <button
+                  className="inline-block px-6 py-3 text-base font-semibold text-white bg-primary rounded-lg shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200 w-full sm:w-auto"
+                  aria-label={slide.cta}
+                >
+                  {slide.cta}
+                </button>
+              </Link>
             </div>
           </div>
         </div>

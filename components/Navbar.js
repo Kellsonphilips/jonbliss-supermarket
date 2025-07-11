@@ -4,16 +4,34 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, logoutUser } from '../utils/auth';
+import { getCurrentUser, logoutUser, onAuthStateChanged } from '../utils/auth';
+import { useSupermarket } from '../utils/SupermarketContext';
+import { useCartContext } from '../app/cart/CartContext';
+
+// Add debounce utility
+function useDebouncedValue(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
+}
 
 export default function Navbar() {
+  const { getGroupedItemsByBaseName } = useSupermarket();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // Separate user dropdown state
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [cartItems, setCartItems] = useState([]);
+  const debouncedSearchTerm = useDebouncedValue(searchTerm, 250);
+  const { cartItems } = useCartContext();
   const [user, setUser] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
   const router = useRouter();
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     // Load user data
@@ -25,7 +43,7 @@ export default function Navbar() {
       try {
         const savedCart = localStorage.getItem('jonbliss-cart');
         if (savedCart) {
-          setCartItems(JSON.parse(savedCart));
+          // setCartItems(JSON.parse(savedCart)); // This line is removed as per edit hint
         }
       } catch (error) {
         console.error('Error loading cart:', error);
@@ -48,6 +66,26 @@ export default function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    // Listen for auth state changes
+    const unsubscribe = onAuthStateChanged((user) => {
+      setUser(user);
+    });
+    return () => unsubscribe && unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      setSearchLoading(true);
+      const allProducts = getGroupedItemsByBaseName ? getGroupedItemsByBaseName() : [];
+      const results = allProducts.filter(product => product.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()));
+      setSearchResults(results);
+      setSearchLoading(false);
+    } else {
+      setSearchResults([]);
+    }
+  }, [debouncedSearchTerm, getGroupedItemsByBaseName]);
+
   const handleLogout = () => {
     logoutUser();
     setUser(null);
@@ -59,6 +97,7 @@ export default function Navbar() {
       router.push(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
       setIsSearchOpen(false);
       setSearchTerm('');
+      setSearchResults([]);
     }
   };
 
@@ -77,6 +116,19 @@ export default function Navbar() {
   const getCartItemCount = () => {
     return cartItems.reduce((count, item) => count + item.quantity, 0);
   };
+
+  // User menu toggle handler
+  const handleUserMenuToggle = () => {
+    setIsUserMenuOpen((prev) => !prev);
+    setIsMenuOpen(false); // Close mobile menu if open
+  };
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <nav className="bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100 fixed w-full top-0 z-50">
@@ -136,17 +188,52 @@ export default function Navbar() {
             {/* Desktop Search */}
             <div className="hidden md:block relative">
               <form onSubmit={handleSearch} className="flex items-center">
-                <div className="relative">
+                <div className="relative w-full">
                   <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search products..."
                     className="w-64 lg:w-80 px-4 py-2.5 pl-10 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 bg-gray-50/50 hover:bg-white"
+                    onFocus={() => setIsSearchOpen(true)}
                   />
                   <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
+                  {/* Search Suggestions Dropdown */}
+                  {isSearchOpen && searchTerm && (
+                    <div className="absolute left-0 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto">
+                      {searchLoading ? (
+                        <div className="p-4 text-center text-gray-400">Searching...</div>
+                      ) : searchResults.length > 0 ? (
+                        searchResults.slice(0, 8).map(product => (
+                          <div
+                            key={product.id}
+                            className="flex items-center px-4 py-2 hover:bg-gray-50 cursor-pointer"
+                            onClick={() => {
+                              router.push(`/product/${product.id}`);
+                              setIsSearchOpen(false);
+                              setSearchTerm('');
+                              setSearchResults([]);
+                            }}
+                          >
+                            <Image
+                              src={product.image || '/placeholder-product.jpg'}
+                              alt={product.name}
+                              width={32}
+                              height={32}
+                              className="rounded object-cover mr-3"
+                            />
+                            <span className="text-gray-900 font-medium truncate">{product.name}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-4 text-center text-gray-400">
+                          No products found. Try a different keyword.
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <button
                   type="submit"
@@ -183,7 +270,7 @@ export default function Navbar() {
 
               {/* Cart Dropdown */}
               {isCartOpen && (
-                <div className="absolute right-0 mt-3 w-80 lg:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden">
+                <div className={`absolute right-0 mt-2 w-80 lg:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden transition-all duration-200 ${isMobile ? 'left-1/2 -translate-x-1/2 right-auto w-11/12 max-w-xs' : ''}`}>
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-bold text-gray-900">Shopping Cart</h3>
@@ -250,7 +337,7 @@ export default function Navbar() {
             {user ? (
               <div className="relative">
                 <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  onClick={handleUserMenuToggle}
                   className="flex items-center space-x-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg px-3 py-2 transition-all duration-200 group"
                 >
                   <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-primary to-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-200">
@@ -259,13 +346,13 @@ export default function Navbar() {
                     </span>
                   </div>
                   <span className="hidden lg:block font-medium">{user.name}</span>
-                  <svg className={`w-4 h-4 transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
 
                 {/* User Dropdown */}
-                {isMenuOpen && (
+                {isUserMenuOpen && (
                   <div className="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden">
                     <div className="p-4">
                       <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl mb-3">
@@ -281,7 +368,7 @@ export default function Navbar() {
                         <Link
                           href="/profile"
                           className="flex items-center space-x-3 px-3 py-2.5 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-all duration-200"
-                          onClick={() => setIsMenuOpen(false)}
+                          onClick={() => setIsUserMenuOpen(false)}
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -292,7 +379,7 @@ export default function Navbar() {
                           <Link
                             href="/admin"
                             className="flex items-center space-x-3 px-3 py-2.5 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-all duration-200"
-                            onClick={() => setIsMenuOpen(false)}
+                            onClick={() => setIsUserMenuOpen(false)}
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -303,7 +390,7 @@ export default function Navbar() {
                         <button
                           onClick={() => {
                             handleLogout();
-                            setIsMenuOpen(false);
+                            setIsUserMenuOpen(false);
                           }}
                           className="flex items-center space-x-3 px-3 py-2.5 text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 w-full text-left"
                         >

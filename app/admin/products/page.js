@@ -8,11 +8,22 @@ import AdminSidebar from '../../../components/admin/AdminSidebar';
 import AdminHeader from '../../../components/admin/AdminHeader';
 import Image from 'next/image';
 
+// Add debounce utility
+function useDebouncedValue(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
+}
+
 function ProductsListContent() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebouncedValue(searchTerm, 250);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const router = useRouter();
@@ -113,8 +124,8 @@ function ProductsListContent() {
   }, [router, searchParams]);
 
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.sku.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = product.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                         product.sku.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
     const matchesCategory = selectedCategory === '' || selectedCategory === 'All Categories' || product.category === selectedCategory;
     const matchesStatus = selectedStatus === '' || selectedStatus === 'All Status' || product.status === selectedStatus;
     
@@ -357,10 +368,13 @@ function ProductsListContent() {
                   <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
-                  <h3 className="mt-2 text-sm font-medium text-gray-900">No products found</h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Try adjusting your search or filter criteria.
+                  <h3 className="mt-2 text-lg font-semibold text-gray-900">No products found</h3>
+                  <p className="mt-1 text-base text-gray-500">
+                    Sorry, we couldn&apos;t find any products matching your search.
                   </p>
+                  {debouncedSearchTerm && (
+                    <p className="mt-2 text-sm text-gray-400">Try a different keyword or check your spelling.</p>
+                  )}
                 </div>
               )}
             </div>
