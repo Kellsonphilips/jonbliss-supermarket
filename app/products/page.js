@@ -5,10 +5,13 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { SupermarketProvider, useSupermarket } from '../../utils/SupermarketContext';
 import ProductCard from '../../components/ProductCard';
+import { useSearchParams } from 'next/navigation';
 
 function ProductsContent() {
+  const searchParams = useSearchParams();
+  const urlCategory = searchParams.get('category');
   const { getAllCategories, getItemsByCategory, searchItems, getItemsByFilters, getGroupedItemsByBaseName, getVarietiesByBaseName } = useSupermarket();
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState(urlCategory || 'all');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const [showInStockOnly, setShowInStockOnly] = useState(true);
@@ -27,6 +30,12 @@ function ProductsContent() {
     };
     loadData();
   }, [getAllCategories, getGroupedItemsByBaseName]);
+
+  useEffect(() => {
+    if (urlCategory && urlCategory !== selectedCategory) {
+      setSelectedCategory(urlCategory);
+    }
+  }, [urlCategory]);
 
   useEffect(() => {
     let filteredProducts = [];

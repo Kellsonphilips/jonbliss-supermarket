@@ -234,6 +234,7 @@ export default function Navbar() {
                           <Link
                             href="/cart"
                             className="w-full bg-gradient-to-r from-primary to-red-600 text-white py-3 px-4 rounded-xl text-sm font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 text-center block shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                            onClick={() => setIsCartOpen(false)}
                           >
                             View Cart
                           </Link>

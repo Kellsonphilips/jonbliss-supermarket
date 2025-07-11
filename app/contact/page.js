@@ -124,7 +124,7 @@ export default function Contact() {
       <div className="min-h-screen bg-gray-50">
         
         {/* Hero Section */}
-        <section className="pt-20 pb-16 relative text-white overflow-hidden">
+        <section className="pt-24 pb-16 relative text-white overflow-hidden">
           <div className="absolute inset-0 w-full h-full">
             <img src="/contact.jpg" alt="Contact Jonbliss" className="w-full h-full object-cover object-center" />
             <div className="absolute inset-0 bg-black/40"></div>

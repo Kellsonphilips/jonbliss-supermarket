@@ -12,6 +12,7 @@ function HomeContent() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     const loadHomeData = () => {
@@ -74,34 +75,46 @@ function HomeContent() {
                 <Link
                   key={category}
                   href={`/products?category=${encodeURIComponent(category)}`}
-                  className="group bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center hover:bg-white/90 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl border border-white/20 shadow-lg"
+                  className={`group bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center hover:bg-white/90 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl border border-white/20 shadow-lg ${selectedCategory === category ? 'ring-4 ring-primary/40 border-primary' : ''}`}
+                  onClick={() => setSelectedCategory(category)}
                 >
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 transform group-hover:rotate-6 transition-all duration-300">
-                    <span className="text-4xl group-hover:scale-110 transition-transform duration-300">
-                      {category === 'Cereals' && '🥣'}
-                      {category === 'Beverages' && '☕'}
-                      {category === 'Snacks' && '🍿'}
-                      {category === 'Household' && '🏠'}
-                      {category === 'Personal Care' && '🧴'}
-                      {category === 'Drinks' && '🍷'}
-                      {category === 'Fruits & Vegetables' && '🥬'}
-                      {category === 'Dairy & Eggs' && '🥛'}
-                      {category === 'Meat & Fish' && '🥩'}
-                      {category === 'Bakery' && '🥖'}
-                      {category === 'Frozen Foods' && '🧊'}
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 transform group-hover:rotate-6 transition-all duration-300 ${selectedCategory === category ? 'bg-primary/10 ring-4 ring-primary/40 scale-110' : ''}`}>
+                    <span className={`text-4xl group-hover:scale-110 transition-transform duration-300 ${selectedCategory === category ? 'text-primary scale-125' : ''}`}>
+                      {category === 'Cereals' && '🌾'}
+                      {category === 'Beverages' && '🧃'}
+                      {category === 'Snacks' && '🍪'}
+                      {category === 'Household' && '🧹'}
+                      {category === 'Personal Care' && '🪥'}
+                      {category === 'Drinks' && '🥤'}
+                      {category === 'Fruits & Vegetables' && '🍎'}
+                      {category === 'Dairy & Eggs' && '🧀'}
+                      {category === 'Meat & Fish' && '🐟'}
+                      {category === 'Bakery' && '🍞'}
+                      {category === 'Frozen Foods' && '❄️'}
                       {category === 'Canned Goods' && '🥫'}
-                      {category === 'Condiments' && '🧂'}
-                      {category === 'Baby Care' && '👶'}
-                      {category === 'Pet Supplies' && '🐕'}
-                      {category === 'Health & Wellness' && '💊'}
-                      {category === 'Cleaning Supplies' && '🧽'}
-                      {category === 'Paper & Plastic' && '📦'}
-                      {category === 'Electronics' && '📱'}
-                      {category === 'Clothing' && '👕'}
-                      {!['Cereals', 'Beverages', 'Snacks', 'Household', 'Personal Care', 'Drinks', 'Fruits & Vegetables', 'Dairy & Eggs', 'Meat & Fish', 'Bakery', 'Frozen Foods', 'Canned Goods', 'Condiments', 'Baby Care', 'Pet Supplies', 'Health & Wellness', 'Cleaning Supplies', 'Paper & Plastic', 'Electronics', 'Clothing'].includes(category) && '🛒'}
+                      {category === 'Condiments' && '🥄'}
+                      {category === 'Baby Care' && '🍼'}
+                      {category === 'Pet Supplies' && '🐾'}
+                      {category === 'Health & Wellness' && '🩺'}
+                      {category === 'Cleaning Supplies' && '🧴'}
+                      {category === 'Paper & Plastic' && '🧻'}
+                      {category === 'Electronics' && '💡'}
+                      {category === 'Clothing' && '👗'}
+                      {category === 'Toiletries' && '🧻'}
+                      {category === 'Baby Items' && '🧸'}
+                      {category === 'Cosmetics' && '💄'}
+                      {category === 'Household Items' && '🧺'}
+                      {/* Add any missing categories here, e.g.: */}
+                      {category === 'Groceries' && '🛍️'}
+                      {category === 'Vegetables' && '🥦'}
+                      {category === 'Fish' && '🐠'}
+                      {category === 'Eggs' && '🥚'}
+                      {category === 'Milk' && '🥛'}
+                      {/* Fallback icon for any category not listed above */}
+                      {!['Cereals', 'Beverages', 'Snacks', 'Household', 'Personal Care', 'Drinks', 'Fruits & Vegetables', 'Dairy & Eggs', 'Meat & Fish', 'Bakery', 'Frozen Foods', 'Canned Goods', 'Condiments', 'Baby Care', 'Pet Supplies', 'Health & Wellness', 'Cleaning Supplies', 'Paper & Plastic', 'Electronics', 'Clothing', 'Groceries', 'Vegetables', 'Fish', 'Eggs', 'Milk', 'Toiletries', 'Baby Items', 'Cosmetics', 'Household Items'].includes(category) && '🛒'}
                     </span>
                   </div>
-                  <h3 className="font-semibold text-sm group-hover:text-primary transition-colors duration-300">
+                  <h3 className={`font-semibold text-sm group-hover:text-primary transition-colors duration-300 ${selectedCategory === category ? 'text-primary' : ''}`}>
                     {category}
                   </h3>
                 </Link>

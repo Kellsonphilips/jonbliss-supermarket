@@ -82,7 +82,7 @@ export default function HeroSlideshow() {
   };
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="pt-20 relative h-screen overflow-hidden">
       {/* Slides */}
       {slides.map((slide, index) => (
         <div
