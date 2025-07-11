@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { SupermarketProvider, useSupermarket } from '../../utils/SupermarketContext';
@@ -291,7 +291,9 @@ function ProductsContent() {
 export default function Products() {
   return (
     <SupermarketProvider>
-      <ProductsContent />
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div><p className="mt-4 text-gray-600">Loading products...</p></div></div>}>
+        <ProductsContent />
+      </Suspense>
     </SupermarketProvider>
   );
 } 
