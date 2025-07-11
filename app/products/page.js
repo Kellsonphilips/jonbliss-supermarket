@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { SupermarketProvider, useSupermarket } from '../../utils/SupermarketContext';
 import ProductCard from '../../components/ProductCard';
 import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 
 function ProductsContent() {
   const searchParams = useSearchParams();
@@ -35,53 +36,9 @@ function ProductsContent() {
     if (urlCategory && urlCategory !== selectedCategory) {
       setSelectedCategory(urlCategory);
     }
-  }, [urlCategory]);
+  }, [urlCategory, selectedCategory]);
 
-  useEffect(() => {
-    let filteredProducts = [];
-    if (selectedCategory === 'all') {
-      filteredProducts = getGroupedItemsByBaseName();
-    } else {
-      filteredProducts = getGroupedItemsByBaseName(selectedCategory);
-    }
-    // Apply search filter
-    if (searchTerm) {
-      filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
-    }
-    // Apply stock filter - only show products with stock if enabled
-    if (showInStockOnly) {
-      filteredProducts = filteredProducts.filter(product => product.stock > 0);
-    }
-    // Apply sorting
-    filteredProducts = sortProducts(filteredProducts, sortBy);
-    setProducts(filteredProducts);
-  }, [selectedCategory, searchTerm, sortBy, showInStockOnly, categories, getGroupedItemsByBaseName]);
-
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-  };
-
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleSortChange = (e) => {
-    setSortBy(e.target.value);
-  };
-
-  // Helper function to extract numeric price value
-  const getNumericPrice = (price) => {
-    if (typeof price === 'number') return price;
-    if (typeof price === 'string') {
-      // Remove currency symbol, commas, and spaces, then parse
-      const cleanPrice = price.replace(/[₦$,]/g, '').replace(/\s/g, '');
-      const numericPrice = parseFloat(cleanPrice);
-      return isNaN(numericPrice) ? 0 : numericPrice;
-    }
-    return 0;
-  };
-
-  const sortProducts = (products, sortBy) => {
+  const sortProducts = useCallback((products, sortBy) => {
     if (!products || products.length === 0) return products;
     
     const sortedProducts = [...products];
@@ -132,6 +89,50 @@ function ProductsContent() {
       default:
         return sortedProducts;
     }
+  }, []);
+
+  useEffect(() => {
+    let filteredProducts = [];
+    if (selectedCategory === 'all') {
+      filteredProducts = getGroupedItemsByBaseName();
+    } else {
+      filteredProducts = getGroupedItemsByBaseName(selectedCategory);
+    }
+    // Apply search filter
+    if (searchTerm) {
+      filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+    // Apply stock filter - only show products with stock if enabled
+    if (showInStockOnly) {
+      filteredProducts = filteredProducts.filter(product => product.stock > 0);
+    }
+    // Apply sorting
+    filteredProducts = sortProducts(filteredProducts, sortBy);
+    setProducts(filteredProducts);
+  }, [selectedCategory, searchTerm, sortBy, showInStockOnly, categories, getGroupedItemsByBaseName, sortProducts]);
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  // Helper function to extract numeric price value
+  const getNumericPrice = (price) => {
+    if (typeof price === 'number') return price;
+    if (typeof price === 'string') {
+      // Remove currency symbol, commas, and spaces, then parse
+      const cleanPrice = price.replace(/[₦$,]/g, '').replace(/\s/g, '');
+      const numericPrice = parseFloat(cleanPrice);
+      return isNaN(numericPrice) ? 0 : numericPrice;
+    }
+    return 0;
   };
 
   if (loading) {
@@ -158,10 +159,12 @@ function ProductsContent() {
         {/* Hero Section */}
         <section className="pt-20 pb-16 relative">
           <div className="absolute inset-0 w-full h-full">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80"
               alt="Fresh groceries and products"
-              className="w-full h-full object-cover object-center"
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
             />
           </div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">

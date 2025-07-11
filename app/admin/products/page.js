@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { getCurrentUser, isLoggedIn } from '../../../utils/auth';
 import AdminSidebar from '../../../components/admin/AdminSidebar';
 import AdminHeader from '../../../components/admin/AdminHeader';
+import Image from 'next/image';
 
 function ProductsListContent() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -286,10 +287,12 @@ function ProductsListContent() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="flex-shrink-0 h-12 w-12">
-                              <img
-                                className="h-12 w-12 rounded-lg object-cover"
+                              <Image
                                 src={product.image}
                                 alt={product.name}
+                                width={48}
+                                height={48}
+                                className="h-12 w-12 rounded-lg object-cover"
                               />
                             </div>
                             <div className="ml-4">

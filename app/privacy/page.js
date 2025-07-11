@@ -36,7 +36,7 @@ export default function PrivacyPolicy() {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  Jonbliss Supermarket ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our mobile application, or interact with our services.
+                  Jonbliss Supermarket (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our mobile application, or interact with our services.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
                   By using our services, you agree to the collection and use of information in accordance with this policy. If you do not agree with our policies and practices, please do not use our services.
@@ -172,7 +172,7 @@ export default function PrivacyPolicy() {
 
               {/* Children's Privacy */}
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">10. Children's Privacy</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">10. Children&apos;s Privacy</h2>
                 <p className="text-gray-700 leading-relaxed">
                   Our services are not intended for children under the age of 16. We do not knowingly collect personal information from children under 16. If you believe we have collected information from a child under 16, please contact us immediately.
                 </p>
@@ -182,7 +182,7 @@ export default function PrivacyPolicy() {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">11. Changes to This Privacy Policy</h2>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+                  We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
                   We encourage you to review this Privacy Policy periodically for any changes. Your continued use of our services after any changes constitutes acceptance of the updated policy.

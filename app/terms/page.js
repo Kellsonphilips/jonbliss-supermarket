@@ -36,7 +36,7 @@ export default function TermsOfService() {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Acceptance of Terms</h2>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  These Terms of Service ("Terms") govern your use of Jonbliss Supermarket's website, mobile application, and services (collectively, the "Services"). By accessing or using our Services, you agree to be bound by these Terms and all applicable laws and regulations.
+                  These Terms of Service (&quot;Terms&quot;) govern your use of Jonbliss Supermarket&apos;s website, mobile application, and services (collectively, the &quot;Services&quot;). By accessing or using our Services, you agree to be bound by these Terms and all applicable laws and regulations.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
                   If you do not agree with any of these terms, you are prohibited from using or accessing our Services. These Terms apply to all visitors, users, and others who access or use the Services.
@@ -47,11 +47,11 @@ export default function TermsOfService() {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Definitions</h2>
                 <ul className="list-disc list-inside text-gray-700 space-y-2">
-                  <li><strong>"Company," "we," "us," or "our"</strong> refers to Jonbliss Supermarket</li>
-                  <li><strong>"User," "you," or "your"</strong> refers to the individual accessing or using the Services</li>
-                  <li><strong>"Services"</strong> refers to our website, mobile application, and all related services</li>
-                  <li><strong>"Content"</strong> refers to text, images, videos, and other materials on our Services</li>
-                  <li><strong>"Account"</strong> refers to your user account with Jonbliss Supermarket</li>
+                  <li><strong>&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;</strong> refers to Jonbliss Supermarket</li>
+                  <li><strong>&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;</strong> refers to the individual accessing or using the Services</li>
+                  <li><strong>&quot;Services&quot;</strong> refers to our website, mobile application, and all related services</li>
+                  <li><strong>&quot;Content&quot;</strong> refers to text, images, videos, and other materials on our Services</li>
+                  <li><strong>&quot;Account&quot;</strong> refers to your user account with Jonbliss Supermarket</li>
                 </ul>
               </div>
 
@@ -154,7 +154,7 @@ export default function TermsOfService() {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">10. Disclaimers</h2>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+                  THE SERVICES ARE PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   We do not warrant that the Services will be uninterrupted, secure, or error-free, or that defects will be corrected.
@@ -203,7 +203,7 @@ export default function TermsOfService() {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">15. Changes to Terms</h2>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  We reserve the right to modify these Terms at any time. We will notify users of any material changes by posting the new Terms on this page and updating the "Last updated" date.
+                  We reserve the right to modify these Terms at any time. We will notify users of any material changes by posting the new Terms on this page and updating the &quot;Last updated&quot; date.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
                   Your continued use of the Services after any changes constitutes acceptance of the new Terms.

@@ -181,10 +181,10 @@ export default function About() {
                         We dream of a future where Jonbliss is synonymous with quality, trust, and community service across the region. We want to be the first name that comes to mind when people think about where to get their groceries – not just because we have the best products, but because we have the best people, the best service, and the strongest commitment to our communities.
                       </p>
                       <p className="text-gray-700 leading-relaxed mb-4">
-                        Our vision includes expanding our reach while maintaining the intimate, personal service that made us successful. We plan to leverage cutting-edge technology to make shopping more convenient – from advanced inventory management systems to seamless online ordering and delivery – while ensuring that every customer still feels like they're shopping at their neighborhood store.
+                        Our vision includes expanding our reach while maintaining the intimate, personal service that made us successful. We plan to leverage cutting-edge technology to make shopping more convenient – from advanced inventory management systems to seamless online ordering and delivery – while ensuring that every customer still feels like they&apos;re shopping at their neighborhood store.
                       </p>
                       <p className="text-gray-700 leading-relaxed">
-                        Most importantly, we envision Jonbliss as a catalyst for positive change in the communities we serve. We want to be known not just for our products, but for our commitment to sustainability, our support of local businesses, our investment in our employees, and our dedication to making a difference. We believe that success isn't just measured in sales numbers, but in the lives we touch and the communities we strengthen.
+                        Most importantly, we envision Jonbliss as a catalyst for positive change in the communities we serve. We want to be known not just for our products, but for our commitment to sustainability, our support of local businesses, our investment in our employees, and our dedication to making a difference. We believe that success isn&apos;t just measured in sales numbers, but in the lives we touch and the communities we strengthen.
                       </p>
                     </div>
                   </div>

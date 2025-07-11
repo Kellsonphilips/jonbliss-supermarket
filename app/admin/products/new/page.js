@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { getCurrentUser, isLoggedIn } from '../../../../utils/auth';
 import AdminSidebar from '../../../../components/admin/AdminSidebar';
 import AdminHeader from '../../../../components/admin/AdminHeader';
+import Image from 'next/image';
 
 export default function AddProduct() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -468,9 +469,11 @@ export default function AddProduct() {
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {formData.images.map((image, index) => (
                           <div key={index} className="relative">
-                            <img
+                            <Image
                               src={image}
                               alt={`Product ${index + 1}`}
+                              width={100}
+                              height={50}
                               className="w-full h-24 object-cover rounded-lg"
                             />
                             <button

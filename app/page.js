@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { SupermarketProvider, useSupermarket } from '../utils/SupermarketContext';
 import HeroSlideshow from '../components/HeroSlideshow';
 import ProductCard from '../components/ProductCard';
+import Image from 'next/image';
 
 function HomeContent() {
   const { getAllCategories, getItemsByCategory, getItemsSortedByQuantity } = useSupermarket();
@@ -164,10 +165,12 @@ function HomeContent() {
         {/* CTA Section */}
         <section className="py-16 relative">
           <div className="absolute inset-0 w-full h-full">
-            <img
+            <Image
               src="/all-range.jpg"
               alt="Inside supermarket view"
-              className="w-full h-full object-cover object-center"
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
               style={{ zIndex: 0 }}
             />
           </div>

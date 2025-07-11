@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 
 export default function TopProducts() {
   const products = [
@@ -57,10 +58,11 @@ export default function TopProducts() {
         <div key={product.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
           <div className="flex-shrink-0">
             <div className="w-10 h-10 rounded-lg overflow-hidden">
-              <img
+              <Image
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                width={40}
+                height={40}
               />
             </div>
           </div>
