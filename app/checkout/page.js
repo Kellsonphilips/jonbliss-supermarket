@@ -183,7 +183,7 @@ export default function Checkout() {
               </div>
               <h1 className="text-3xl font-bold text-gray-900 mb-4">Order Confirmed!</h1>
               <p className="text-gray-600 mb-8">
-                Thank you for your order. We'll send you an email confirmation with your order details.
+                Thank you for your order. We&apos;ll send you an email confirmation with your order details.
               </p>
               <Link
                 href="/products"

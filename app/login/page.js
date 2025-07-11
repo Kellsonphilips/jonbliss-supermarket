@@ -256,7 +256,7 @@ function LoginContent() {
 
             <div className="text-center">
               <Link href="/signup" className="text-sm font-medium text-red-600 hover:text-red-500 transition-colors duration-200">
-                Don't have an account? Sign up
+                Don&apos;t have an account? Sign up
               </Link>
             </div>
           </form>
