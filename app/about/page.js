@@ -78,7 +78,7 @@ export default function About() {
         {/* Hero Section */}
         <section className="pt-20 pb-16 relative text-white overflow-hidden">
           <div className="absolute inset-0 w-full h-full">
-            <img src="/about.jpg" alt="About Jonbliss" className="w-full h-full object-cover object-center" />
+            <Image src="/about.jpg" alt="About Jonbliss" fill className="w-full h-full object-cover object-center" priority />
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -135,22 +135,22 @@ export default function About() {
                   <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Journey</h2>
                   <div className="space-y-6 text-gray-700 leading-relaxed">
                     <p>
-                      Jonbliss began as a dream in the heart of John Smith, a passionate entrepreneur who believed that grocery shopping should be more than just a chore – it should be an experience that brings joy and convenience to people's lives. In 2014, armed with nothing but a vision and a small loan from his family, John opened the first Jonbliss store in a modest 2,000-square-foot space in downtown.
+                      Jonbliss began as a dream in the heart of John Smith, a passionate entrepreneur who believed that grocery shopping should be more than just a chore – it should be an experience that brings joy and convenience to people&apos;s lives. In 2014, armed with nothing but a vision and a small loan from his family, John opened the first Jonbliss store in a modest 2,000-square-foot space in downtown.
                     </p>
                     <p>
-                      Those early days were filled with challenges that would have discouraged most people. John worked 16-hour days, personally greeting every customer, learning their names, and understanding their needs. He would often stay late to rearrange shelves, test new products, and find ways to make the shopping experience better. His dedication didn't go unnoticed – within six months, Jonbliss became the talk of the neighborhood.
+                      Those early days were filled with challenges that would have discouraged most people. John worked 16-hour days, personally greeting every customer, learning their names, and understanding their needs. He would often stay late to rearrange shelves, test new products, and find ways to make the shopping experience better. His dedication didn&apos;t go unnoticed – within six months, Jonbliss became the talk of the neighborhood.
                     </p>
                     <p>
                       The turning point came in 2016 when Sarah Johnson joined as our first Operations Director. Her background in retail management and her shared passion for customer service helped us scale our operations while maintaining the personal touch that made us special. Together, John and Sarah expanded to our second location, this time in a bustling suburban area.
                     </p>
                     <p>
-                      By 2018, Jonbliss had grown to serve over 10,000 customers weekly. We introduced our first loyalty program, launched our online ordering system, and began sourcing products directly from local farmers. The community response was overwhelming – people weren't just shopping with us; they were becoming part of the Jonbliss family.
+                      By 2018, Jonbliss had grown to serve over 10,000 customers weekly. We introduced our first loyalty program, launched our online ordering system, and began sourcing products directly from local farmers. The community response was overwhelming – people weren&apos;t just shopping with us; they were becoming part of the Jonbliss family.
                     </p>
                     <p>
-                      Today, Jonbliss stands as a testament to what happens when you put people first. We've expanded to serve over 50,000 customers across multiple locations, but we've never lost sight of what made us successful in the first place: treating every customer like family, offering the highest quality products, and creating a shopping experience that people actually look forward to.
+                      Today, Jonbliss stands as a testament to what happens when you put people first. We&apos;ve expanded to serve over 50,000 customers across multiple locations, but we&apos;ve never lost sight of what made us successful in the first place: treating every customer like family, offering the highest quality products, and creating a shopping experience that people actually look forward to.
                     </p>
                     <p>
-                      Our journey has been marked by countless small moments – the elderly couple who comes in every Sunday for their weekly groceries, the young mother who knows our staff by name, the business owner who trusts us to supply their restaurant. These relationships, built one interaction at a time, are what make Jonbliss more than just a supermarket – we're a cornerstone of the community.
+                      Our journey has been marked by countless small moments – the elderly couple who comes in every Sunday for their weekly groceries, the young mother who knows our staff by name, the business owner who trusts us to supply their restaurant. These relationships, built one interaction at a time, are what make Jonbliss more than just a supermarket – we&apos;re a cornerstone of the community.
                     </p>
                   </div>
                 </div>
@@ -158,7 +158,7 @@ export default function About() {
 
               {activeTab === 'mission' && (
                 <div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Mission & Vision</h2>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-6">Mission &amp; Vision</h2>
                   <div className="space-y-8">
                     <div>
                       <h3 className="text-xl font-semibold text-gray-900 mb-3">Our Mission</h3>
@@ -166,10 +166,10 @@ export default function About() {
                         At Jonbliss, our mission is simple yet profound: we exist to nourish not just bodies, but communities. We believe that access to quality, affordable groceries is a fundamental right, not a privilege. Every decision we make, from the products we stock to the way we train our staff, is guided by this core belief.
                       </p>
                       <p className="text-gray-700 leading-relaxed mb-4">
-                        We're committed to providing our customers with the freshest, highest-quality products at prices that don't break the bank. But our mission goes beyond just selling groceries. We strive to create a shopping experience that feels personal, welcoming, and efficient. Whether it's remembering a customer's name, helping them find a specific ingredient, or simply offering a friendly smile, we want every interaction to leave people feeling valued and cared for.
+                        We&apos;re committed to providing our customers with the freshest, highest-quality products at prices that don&apos;t break the bank. But our mission goes beyond just selling groceries. We strive to create a shopping experience that feels personal, welcoming, and efficient. Whether it&apos;s remembering a customer&apos;s name, helping them find a specific ingredient, or simply offering a friendly smile, we want every interaction to leave people feeling valued and cared for.
                       </p>
                       <p className="text-gray-700 leading-relaxed">
-                        We also believe in the power of community. That's why we partner with local farmers, support neighborhood initiatives, and create spaces where people can connect. We're not just a store – we're a gathering place, a resource, and a trusted partner in our customers' daily lives.
+                        We also believe in the power of community. That&apos;s why we partner with local farmers, support neighborhood initiatives, and create spaces where people can connect. We&apos;re not just a store – we&apos;re a gathering place, a resource, and a trusted partner in our customers&apos; daily lives.
                       </p>
                     </div>
                     <div>
@@ -249,7 +249,7 @@ export default function About() {
         {/* CTA Section */}
         <section className="py-16 relative">
           <div className="absolute inset-0 w-full h-full">
-            <img src="/vareity1.jpg" alt="CTA Background" className="w-full h-full object-cover object-center" />
+            <Image src="/vareity1.jpg" alt="CTA Background" fill className="w-full h-full object-cover object-center" />
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">

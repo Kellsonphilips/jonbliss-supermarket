@@ -234,7 +234,7 @@ export default function Checkout() {
         {/* Hero Section */}
         <section className="pt-20 pb-16 relative text-white overflow-hidden">
           <div className="absolute inset-0 w-full h-full">
-            <img src="/exceptional-service.jpg" alt="Checkout Background" className="w-full h-full object-cover object-center" />
+            <Image src="/exceptional-service.jpg" alt="Checkout Background" fill className="w-full h-full object-cover object-center" />
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">

@@ -7,7 +7,7 @@ import { useSupermarket } from '../utils/SupermarketContext';
 import { isLoggedIn, onAuthStateChanged, getCurrentUser } from '../utils/auth';
 
 export default function ProductCard({ product, children }) {
-  const { getVarietiesByBaseName } = useSupermarket ? useSupermarket() : { getVarietiesByBaseName: null };
+  const { getVarietiesByBaseName } = useSupermarket();
   const [isHovered, setIsHovered] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [showVarietyModal, setShowVarietyModal] = useState(false);
