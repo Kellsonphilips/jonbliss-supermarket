@@ -174,9 +174,8 @@ function ProductsContent() {
             <Image
               src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80"
               alt="Fresh groceries and products"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="center"
+              fill
+              className="object-cover object-center"
             />
           </div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">

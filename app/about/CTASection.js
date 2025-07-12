@@ -6,7 +6,7 @@ export default function CTASection() {
   return (
     <section className="py-16 relative">
       <div className="absolute inset-0 w-full h-full">
-        <Image src="/vareity1.jpg" alt="CTA Background" fill className="w-full h-full object-cover object-center" />
+        <Image src="/vareity1.jpg" alt="CTA Background" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px" className="w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">

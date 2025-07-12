@@ -17,6 +17,7 @@ function LoginContent() {
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState(null);
   const [emailError, setEmailError] = useState(null);
+  const [authChecking, setAuthChecking] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -28,12 +29,36 @@ function LoginContent() {
     }
   }, [searchParams]);
 
-  // Redirect if already logged in
+  // Redirect if already logged in - with proper loading state
   useEffect(() => {
-    if (isLoggedIn()) {
-      router.push('/');
-    }
+    const checkAuth = () => {
+      try {
+        if (isLoggedIn()) {
+          router.push('/');
+        }
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+      } finally {
+        setAuthChecking(false);
+      }
+    };
+
+    // Add a small delay to prevent race conditions
+    const timer = setTimeout(checkAuth, 100);
+    return () => clearTimeout(timer);
   }, [router]);
+
+  // Show loading spinner while checking auth
+  if (authChecking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-orange-50 to-red-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Email validation function
   const validateEmail = (email) => {
@@ -84,11 +109,11 @@ function LoginContent() {
       
       setSuccess('Login successful! Redirecting...');
       
-      // Redirect to intended page after login
+      // Redirect to intended page after login with a slightly longer delay to ensure state is synchronized
       const redirect = searchParams.get('redirect') || '/';
       setTimeout(() => {
         router.push(redirect);
-      }, 1000);
+      }, 1500);
       
     } catch (err) {
       setError(err.message);
@@ -112,11 +137,11 @@ function LoginContent() {
       
       setSuccess(`Successfully signed in with ${user.providerName}! Redirecting...`);
       
-      // Redirect to intended page after login
+      // Redirect to intended page after login with a slightly longer delay to ensure state is synchronized
       const redirect = searchParams.get('redirect') || '/';
       setTimeout(() => {
         router.push(redirect);
-      }, 1000);
+      }, 1500);
       
     } catch (err) {
       setError(err.message);

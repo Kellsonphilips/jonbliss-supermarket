@@ -30,14 +30,30 @@ export default function Navbar() {
   const [user, setUser] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Load user data
-    const currentUser = getCurrentUser();
-    setUser(currentUser);
+    // Load user data with proper error handling
+    const loadUserData = () => {
+      try {
+        const currentUser = getCurrentUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.error('Error loading user data:', error);
+        setUser(null);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
 
+    // Add a small delay to prevent race conditions during page load
+    const timer = setTimeout(loadUserData, 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     // Load cart data
     const loadCart = () => {
       try {
@@ -67,9 +83,14 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    // Listen for auth state changes
+    // Listen for auth state changes with proper error handling
     const unsubscribe = onAuthStateChanged((user) => {
-      setUser(user);
+      try {
+        setUser(user);
+      } catch (error) {
+        console.error('Error handling auth state change:', error);
+        setUser(null);
+      }
     });
     return () => unsubscribe && unsubscribe();
   }, []);
@@ -144,6 +165,7 @@ export default function Navbar() {
                   width={48}
                   height={48}
                   className="h-12 w-12 lg:h-14 lg:w-14 transition-transform duration-300 group-hover:scale-110"
+                  priority
                 />
               </div>
               <div className="ml-3 lg:ml-4">
@@ -259,6 +281,7 @@ export default function Navbar() {
                     width={24}
                     height={24}
                     className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+                    style={{ height: 'auto' }}
                   />
                   {getCartItemCount() > 0 && (
                     <span className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold shadow-lg animate-pulse">

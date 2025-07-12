@@ -175,14 +175,26 @@ export const loginUser = async (email, password) => {
       throw new Error('Incorrect password');
     }
 
-    // Set login status
-    localStorage.setItem(LOGIN_STATUS_KEY, 'true');
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+    // Set login status and user data atomically
+    try {
+      localStorage.setItem(LOGIN_STATUS_KEY, 'true');
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+    } catch (storageError) {
+      console.error('Error setting authentication data:', storageError);
+      throw new Error('Failed to complete login. Please try again.');
+    }
 
     // Return user data without password
     const { password: userPassword, ...userWithoutPassword } = user;
     return userWithoutPassword;
   } catch (error) {
+    // Clear any partial authentication state on error
+    try {
+      localStorage.removeItem(LOGIN_STATUS_KEY);
+      localStorage.removeItem(CURRENT_USER_KEY);
+    } catch (clearError) {
+      console.error('Error clearing auth data on login failure:', clearError);
+    }
     throw error;
   }
 };
@@ -240,14 +252,26 @@ export const socialLoginUser = async (provider) => {
     // Save updated users
     saveUsers(users);
     
-    // Set login status
-    localStorage.setItem(LOGIN_STATUS_KEY, 'true');
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(finalUser));
+    // Set login status and user data atomically
+    try {
+      localStorage.setItem(LOGIN_STATUS_KEY, 'true');
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(finalUser));
+    } catch (storageError) {
+      console.error('Error setting authentication data:', storageError);
+      throw new Error('Failed to complete social login. Please try again.');
+    }
     
     // Return user data without sensitive info
     const { password, ...userWithoutPassword } = finalUser;
     return userWithoutPassword;
   } catch (error) {
+    // Clear any partial authentication state on error
+    try {
+      localStorage.removeItem(LOGIN_STATUS_KEY);
+      localStorage.removeItem(CURRENT_USER_KEY);
+    } catch (clearError) {
+      console.error('Error clearing auth data on social login failure:', clearError);
+    }
     throw error;
   }
 };
@@ -285,6 +309,13 @@ export const getCurrentUser = () => {
     return userWithoutPassword;
   } catch (error) {
     console.error('Error getting current user:', error);
+    // Clear corrupted data
+    try {
+      localStorage.removeItem(CURRENT_USER_KEY);
+      localStorage.removeItem(LOGIN_STATUS_KEY);
+    } catch (clearError) {
+      console.error('Error clearing corrupted auth data:', clearError);
+    }
     return null;
   }
 };
@@ -295,9 +326,24 @@ export const isLoggedIn = () => {
   
   try {
     const loginStatus = localStorage.getItem(LOGIN_STATUS_KEY);
+    const userData = localStorage.getItem(CURRENT_USER_KEY);
+    
+    // If login status is true but no user data, clear the invalid state
+    if (loginStatus === 'true' && !userData) {
+      localStorage.removeItem(LOGIN_STATUS_KEY);
+      return false;
+    }
+    
     return loginStatus === 'true';
   } catch (error) {
     console.error('Error checking login status:', error);
+    // Clear corrupted data
+    try {
+      localStorage.removeItem(LOGIN_STATUS_KEY);
+      localStorage.removeItem(CURRENT_USER_KEY);
+    } catch (clearError) {
+      console.error('Error clearing corrupted auth data:', clearError);
+    }
     return false;
   }
 };

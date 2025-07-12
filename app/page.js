@@ -168,9 +168,8 @@ function HomeContent() {
             <Image
               src="/all-range.jpg"
               alt="Inside supermarket view"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="center"
+              fill
+              className="object-cover object-center"
               style={{ zIndex: 0 }}
             />
           </div>

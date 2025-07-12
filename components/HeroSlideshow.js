@@ -122,7 +122,7 @@ export default function HeroSlideshow() {
               </p>
               <Link href={slide.href}>
                 <button
-                  className="inline-block px-6 py-3 text-base font-semibold text-white bg-primary rounded-lg shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200 w-full sm:w-auto"
+                  className="inline-block px-8 py-4 text-lg font-semibold text-white bg-primary rounded-lg shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200 min-w-[200px]"
                   aria-label={slide.cta}
                 >
                   {slide.cta}
