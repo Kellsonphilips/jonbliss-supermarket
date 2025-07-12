@@ -289,6 +289,9 @@ export const logoutUser = () => {
       detail: { isLoggedIn: false, user: null } 
     }));
     
+    // Dispatch specific logout event
+    window.dispatchEvent(new CustomEvent('user-logged-out'));
+    
     return true;
   } catch (error) {
     console.error('Error during logout:', error);

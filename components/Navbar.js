@@ -87,12 +87,48 @@ export default function Navbar() {
     const unsubscribe = onAuthStateChanged((user) => {
       try {
         setUser(user);
+        // Close user menu when user logs out
+        if (!user) {
+          setIsUserMenuOpen(false);
+        }
       } catch (error) {
         console.error('Error handling auth state change:', error);
         setUser(null);
+        setIsUserMenuOpen(false);
       }
     });
     return () => unsubscribe && unsubscribe();
+  }, []);
+
+  // Listen for logout events specifically
+  useEffect(() => {
+    const handleLogoutEvent = () => {
+      setUser(null);
+      setIsUserMenuOpen(false);
+    };
+
+    window.addEventListener('user-logged-out', handleLogoutEvent);
+    
+    return () => {
+      window.removeEventListener('user-logged-out', handleLogoutEvent);
+    };
+  }, []);
+
+  // Close dropdowns when navigating
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsUserMenuOpen(false);
+      setIsCartOpen(false);
+      setIsSearchOpen(false);
+      setIsMenuOpen(false);
+    };
+
+    // Listen for route changes
+    window.addEventListener('popstate', handleRouteChange);
+    
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -110,6 +146,7 @@ export default function Navbar() {
   const handleLogout = () => {
     logoutUser();
     setUser(null);
+    setIsUserMenuOpen(false);
   };
 
   const handleSearch = (e) => {
@@ -326,7 +363,9 @@ export default function Navbar() {
                                 alt={item.name}
                                 width={48}
                                 height={48}
+                                sizes="48px"
                                 className="rounded-lg object-cover"
+                                style={{ width: 'auto', height: 'auto' }}
                               />
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-semibold text-gray-900 truncate">{item.name}</p>
@@ -365,10 +404,10 @@ export default function Navbar() {
                 >
                   <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-primary to-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-200">
                     <span className="text-white text-sm lg:text-base font-bold">
-                      {user.name.charAt(0).toUpperCase()}
+                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                     </span>
                   </div>
-                  <span className="hidden lg:block font-medium">{user.name}</span>
+                  <span className="hidden lg:block font-medium">{user.name || 'User'}</span>
                   <svg className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
@@ -380,11 +419,11 @@ export default function Navbar() {
                     <div className="p-4">
                       <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl mb-3">
                         <div className="w-10 h-10 bg-gradient-to-r from-primary to-red-600 rounded-full flex items-center justify-center">
-                          <span className="text-white font-bold">{user.name.charAt(0).toUpperCase()}</span>
+                          <span className="text-white font-bold">{user.name ? user.name.charAt(0).toUpperCase() : 'U'}</span>
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900">{user.name}</p>
-                          <p className="text-sm text-gray-500">{user.email}</p>
+                          <p className="font-semibold text-gray-900">{user.name || 'User'}</p>
+                          <p className="text-sm text-gray-500">{user.email || 'No email'}</p>
                         </div>
                       </div>
                       <div className="space-y-1">

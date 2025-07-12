@@ -160,6 +160,48 @@ export default function Profile() {
     };
   }, [router]);
 
+  // Listen for logout events and redirect to login
+  useEffect(() => {
+    const handleLogoutEvent = () => {
+      setUser(null);
+      setLoading(false);
+      router.push('/login?message=You have been logged out. Please sign in again to access your profile.');
+    };
+
+    const handleAuthStateChange = (event) => {
+      const { isLoggedIn, user } = event.detail;
+      if (!isLoggedIn) {
+        setUser(null);
+        setLoading(false);
+        router.push('/login?message=You have been logged out. Please sign in again to access your profile.');
+      }
+    };
+
+    window.addEventListener('user-logged-out', handleLogoutEvent);
+    window.addEventListener('auth-state-changed', handleAuthStateChange);
+    
+    return () => {
+      window.removeEventListener('user-logged-out', handleLogoutEvent);
+      window.removeEventListener('auth-state-changed', handleAuthStateChange);
+    };
+  }, [router]);
+
+  // Periodic authentication check
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      if (!isLoggedIn()) {
+        setUser(null);
+        setLoading(false);
+        router.push('/login?message=Your session has expired. Please sign in again to access your profile.');
+      }
+    };
+
+    // Check every 30 seconds
+    const interval = setInterval(checkAuthStatus, 30000);
+    
+    return () => clearInterval(interval);
+  }, [router]);
+
   // Prefill billing form with user billing info if available
   useEffect(() => {
     if (user && user.billing) {
@@ -313,7 +355,7 @@ export default function Profile() {
 
   const handleLogout = () => {
     logoutUser();
-    router.push('/');
+    router.push('/login?message=You have been logged out. Please sign in again to access your profile.');
   };
 
   const removeFromSaved = (itemId) => {

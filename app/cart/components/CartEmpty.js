@@ -9,7 +9,9 @@ export default function CartEmpty() {
         alt="Empty Cart"
         width={120}
         height={120}
+        sizes="120px"
         className="mx-auto mb-4 opacity-50"
+        style={{ width: 'auto', height: 'auto' }}
       />
       <h3 className="mt-2 text-sm font-medium text-gray-900">Your cart is empty</h3>
       <p className="mt-1 text-sm text-gray-500">
