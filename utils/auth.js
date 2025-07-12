@@ -184,6 +184,11 @@ export const loginUser = async (email, password) => {
       throw new Error('Failed to complete login. Please try again.');
     }
 
+    // Dispatch auth state change event
+    window.dispatchEvent(new CustomEvent('auth-state-changed', { 
+      detail: { isLoggedIn: true, user: { ...user, password: undefined } } 
+    }));
+
     // Return user data without password
     const { password: userPassword, ...userWithoutPassword } = user;
     return userWithoutPassword;
@@ -260,6 +265,11 @@ export const socialLoginUser = async (provider) => {
       console.error('Error setting authentication data:', storageError);
       throw new Error('Failed to complete social login. Please try again.');
     }
+
+    // Dispatch auth state change event
+    window.dispatchEvent(new CustomEvent('auth-state-changed', { 
+      detail: { isLoggedIn: true, user: { ...finalUser, password: undefined } } 
+    }));
     
     // Return user data without sensitive info
     const { password, ...userWithoutPassword } = finalUser;

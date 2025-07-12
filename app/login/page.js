@@ -102,11 +102,6 @@ function LoginContent() {
     try {
       const user = await loginUser(formData.email, formData.password);
       
-      // Dispatch auth state change event
-      window.dispatchEvent(new CustomEvent('auth-state-changed', { 
-        detail: { isLoggedIn: true, user } 
-      }));
-      
       setSuccess('Login successful! Redirecting...');
       
       // Redirect to intended page after login with a slightly longer delay to ensure state is synchronized
@@ -129,11 +124,6 @@ function LoginContent() {
     
     try {
       const user = await socialLoginUser(provider);
-      
-      // Dispatch auth state change event
-      window.dispatchEvent(new CustomEvent('auth-state-changed', { 
-        detail: { isLoggedIn: true, user } 
-      }));
       
       setSuccess(`Successfully signed in with ${user.providerName}! Redirecting...`);
       
