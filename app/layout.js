@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
           <CartProvider>
             <SupermarketProvider>
               <Navbar />
-              <main className="pt-20">
+              <main className="pt-24">
                 {children}
               </main>
               <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse"></div>}>

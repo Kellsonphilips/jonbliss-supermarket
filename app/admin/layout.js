@@ -45,7 +45,7 @@ export default function AdminLayout({ children }) {
       <AdminSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
       <div className="flex-1 lg:ml-64 flex flex-col min-h-screen lg:pt-0">
         <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
-        <main className="py-4 flex-1 w-full pt-20 lg:pt-24">
+        <main className="py-4 flex-1 w-full pt-20 lg:pt-12">
           <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 w-full">
             {children}
           </div>
