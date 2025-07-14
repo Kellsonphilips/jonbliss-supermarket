@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSupermarket } from '../../../utils/SupermarketContext';
 import ProductsHero from './ProductsHero';
@@ -8,6 +8,7 @@ import ProductsSidebar from './ProductsSidebar';
 import ProductsSearchBar from './ProductsSearchBar';
 import ProductsGrid from './ProductsGrid';
 import { productsHero } from '../data/hero';
+import LoadingSkeleton from '../../../components/LoadingSkeleton';
 
 function useDebouncedValue(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -143,22 +144,65 @@ export default function ProductsContent() {
     }
   }, []);
 
-  useEffect(() => {
-    let filteredProducts = [];
-    if (selectedCategory === 'all') {
-      filteredProducts = getGroupedItemsByBaseName();
-    } else {
-      filteredProducts = getGroupedItemsByBaseName(selectedCategory);
+  // Memoize filtered and sorted products
+  const filteredProducts = useMemo(() => {
+    if (!products.length) return [];
+    
+    let filtered = products;
+    
+    // Filter by category
+    if (selectedCategory && selectedCategory !== 'all') {
+      filtered = filtered.filter(product => product.category === selectedCategory);
     }
+    
+    // Filter by search term
     if (debouncedSearchTerm) {
-      filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()));
+      const searchLower = debouncedSearchTerm.toLowerCase();
+      filtered = filtered.filter(product => 
+        product.name.toLowerCase().includes(searchLower) ||
+        product.category.toLowerCase().includes(searchLower)
+      );
     }
+    
+    // Filter by stock
     if (showInStockOnly) {
-      filteredProducts = filteredProducts.filter(product => product.stock > 0);
+      filtered = filtered.filter(product => product.stock > 0);
     }
-    filteredProducts = sortProducts(filteredProducts, sortBy);
-    setProducts(filteredProducts);
-  }, [selectedCategory, debouncedSearchTerm, sortBy, showInStockOnly, categories, getGroupedItemsByBaseName, sortProducts]);
+    
+    // Sort products
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'price-low':
+          return a.price - b.price;
+        case 'price-high':
+          return b.price - a.price;
+        case 'stock':
+          return b.stock - a.stock;
+        default:
+          return 0;
+      }
+    });
+    
+    return filtered;
+  }, [products, selectedCategory, debouncedSearchTerm, showInStockOnly, sortBy]);
+
+  // Memoize category options
+  const categoryOptions = useMemo(() => {
+    return [
+      { value: 'all', label: 'All Categories' },
+      ...categories.map(cat => ({ value: cat, label: cat }))
+    ];
+  }, [categories]);
+
+  // Memoize sort options
+  const sortOptions = useMemo(() => [
+    { value: 'name', label: 'Name A-Z' },
+    { value: 'price-low', label: 'Price: Low to High' },
+    { value: 'price-high', label: 'Price: High to Low' },
+    { value: 'stock', label: 'Stock Level' }
+  ], []);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -176,11 +220,22 @@ export default function ProductsContent() {
   }
 
   return (
-    <>
-      <ProductsHero hero={productsHero} />
-      <ProductsSearchBar searchTerm={searchTerm} handleSearch={handleSearch} />
-      <div className="min-h-screen bg-gray-50">
-        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50">
+      <ProductsHero />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Sidebar Toggle Button for Mobile */}
+        <button
+          className="sidebar-toggle lg:hidden mb-4 px-4 py-2 bg-primary text-white rounded-lg font-semibold shadow hover:bg-red-700 transition-all duration-200 w-max"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open Filters"
+        >
+          <svg className="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          Filters
+        </button>
+        
+        <div className="flex flex-col lg:flex-row gap-8">
           <ProductsSidebar
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen}
@@ -194,27 +249,18 @@ export default function ProductsContent() {
             handleConfirm={handleConfirm}
             hasChanges={hasChanges}
           />
-          {/* Sidebar Toggle Button for Mobile */}
-          <button
-            className="sidebar-toggle lg:hidden mb-4 px-4 py-2 bg-primary text-white rounded-lg font-semibold shadow hover:bg-red-700 transition-all duration-200 w-max"
-            onClick={() => setSidebarOpen(true)}
-            aria-label="Open Filters"
-          >
-            <svg className="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            Filters
-          </button>
           <div className="flex-1">
-            <ProductsGrid
-              products={products}
-              selectedCategory={selectedCategory}
-              searchTerm={searchTerm}
-              debouncedSearchTerm={debouncedSearchTerm}
-            />
+            {loading ? (
+              <LoadingSkeleton type="card" count={8} />
+            ) : (
+              <ProductsGrid 
+                products={filteredProducts}
+                key={`${selectedCategory}-${sortBy}-${showInStockOnly}-${debouncedSearchTerm}`}
+              />
+            )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 } 

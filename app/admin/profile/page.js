@@ -3,13 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCurrentUser, isLoggedIn, changePassword } from '../../../utils/auth';
-import AdminSidebar from '../../../components/admin/AdminSidebar';
-import AdminHeader from '../../../components/admin/AdminHeader';
 
 export default function AdminProfile() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('account');
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -158,17 +155,7 @@ export default function AdminProfile() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <AdminSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
-      
-      <div className="flex-1 lg:ml-64">
-        <AdminHeader 
-          currentUser={currentUser} 
-          onMenuClick={() => setSidebarOpen(true)}
-        />
-        
-        <main className="py-6">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 w-full">
             {/* Page Header */}
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-gray-900">Admin Profile</h1>
@@ -427,9 +414,6 @@ export default function AdminProfile() {
                 </div>
               )}
             </div>
-          </div>
-        </main>
-      </div>
     </div>
   );
 } 

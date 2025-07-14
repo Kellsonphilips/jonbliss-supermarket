@@ -1,12 +1,13 @@
 "use client";
 
+import React from 'react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSupermarket } from '../utils/SupermarketContext';
 import { isLoggedIn, onAuthStateChanged, getCurrentUser } from '../utils/auth';
 
-export default function ProductCard({ product, children }) {
+const ProductCard = React.memo(function ProductCard({ product, onAddToCart, onAddToWishlist, isWishlisted = false, children = null }) {
   const { getVarietiesByBaseName } = useSupermarket();
   const [isHovered, setIsHovered] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -382,4 +383,6 @@ export default function ProductCard({ product, children }) {
       )}
     </div>
   );
-} 
+});
+
+export default ProductCard; 

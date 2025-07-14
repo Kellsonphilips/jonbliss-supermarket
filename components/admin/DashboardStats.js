@@ -39,45 +39,35 @@ export default function DashboardStats() {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 mb-8">
       {stats.map((stat) => (
-        <div key={stat.name} className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={stat.icon} />
-                  </svg>
-                </div>
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    {stat.name}
-                  </dt>
-                  <dd className="flex items-baseline">
-                    <div className="text-2xl font-semibold text-gray-900">
-                      {stat.value}
-                    </div>
-                    <div className={`ml-2 flex items-baseline text-sm font-semibold ${
-                      stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      <svg className="self-center flex-shrink-0 h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                      </svg>
-                      <span className="sr-only">
-                        {stat.changeType === 'positive' ? 'Increased' : 'Decreased'} by
-                      </span>
-                      {stat.change}
-                    </div>
-                  </dd>
-                </dl>
+        <div key={stat.name} className="bg-white overflow-hidden shadow rounded-lg flex flex-col h-full">
+          <div className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-0 min-w-0">
+            <div className="flex-shrink-0 mb-2 sm:mb-0">
+              <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={stat.icon} />
+                </svg>
               </div>
             </div>
+            <div className="flex-1 min-w-0">
+              <dl>
+                <dt className="text-xs sm:text-sm font-medium text-gray-500 truncate w-full break-words">{stat.name}</dt>
+                <dd className="flex flex-col sm:flex-row flex-wrap items-baseline min-w-0">
+                  <div className="text-xl sm:text-2xl font-semibold text-gray-900 truncate break-words min-w-0 max-w-full" style={{wordBreak:'break-word'}}>{stat.value}</div>
+                  <div className={`sm:ml-2 flex items-center text-xs sm:text-sm font-semibold ${stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'} truncate break-words min-w-0 max-w-full`} style={{wordBreak:'break-word'}}>
+                    <svg className="self-center flex-shrink-0 h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="sr-only">{stat.changeType === 'positive' ? 'Increased' : 'Decreased'} by</span>
+                    {stat.change}
+                  </div>
+                </dd>
+              </dl>
+            </div>
           </div>
-          <div className="bg-gray-50 px-5 py-3">
-            <div className="text-sm">
+          <div className="bg-gray-50 px-4 sm:px-5 py-2 sm:py-3 mt-auto">
+            <div className="text-xs sm:text-sm">
               <span className="text-gray-500">{stat.description}</span>
             </div>
           </div>

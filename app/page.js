@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { SupermarketProvider, useSupermarket } from '../utils/SupermarketContext';
@@ -15,26 +15,29 @@ function HomeContent() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  useEffect(() => {
-    const loadHomeData = () => {
-      try {
-        // Get all categories
-        const allCategories = getAllCategories();
-        setCategories(allCategories.slice(0, 6)); // Show first 6 categories
-
-        // Get featured products (top selling items)
-        const topProducts = getItemsSortedByQuantity('desc')
-          .filter(product => product.stock > 0) // Only show products with stock
-          .slice(0, 8);
-        setFeaturedProducts(topProducts);
-      } catch (error) {
-        console.error('Error loading home data:', error);
-      }
-      setLoading(false);
-    };
-
-    loadHomeData();
+  // Memoize expensive data processing
+  const processedData = useMemo(() => {
+    try {
+      const allCategories = getAllCategories();
+      const topProducts = getItemsSortedByQuantity('desc')
+        .filter(product => product.stock > 0)
+        .slice(0, 8);
+      
+      return {
+        categories: allCategories.slice(0, 6),
+        products: topProducts
+      };
+    } catch (error) {
+      console.error('Error processing home data:', error);
+      return { categories: [], products: [] };
+    }
   }, [getAllCategories, getItemsSortedByQuantity]);
+
+  useEffect(() => {
+    setCategories(processedData.categories);
+    setFeaturedProducts(processedData.products);
+    setLoading(false);
+  }, [processedData]);
 
   if (loading) {
     return (

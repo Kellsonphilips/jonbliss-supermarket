@@ -1,16 +1,32 @@
 import './globals.css';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { Suspense, lazy } from 'react';
+
+// Lazy load non-critical components
+const Footer = lazy(() => import('../components/Footer'));
 import ErrorBoundary from '../components/ErrorBoundary';
 import { SupermarketProvider } from '../utils/SupermarketContext';
 import { CartProvider } from './cart/CartContext';
 
 export default function RootLayout({ children }) {
+  // Register service worker
+  if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('SW registered: ', registration);
+        })
+        .catch((registrationError) => {
+          console.log('SW registration failed: ', registrationError);
+        });
+    });
+  }
+
   return (
     <html lang="en">
       <head>
-        <title>Jonbliss Supermarket - Online Grocery Shopping in Nigeria</title>
-        <meta name="description" content="Shop online at Jonbliss Supermarket for fresh groceries, household essentials, and more. Fast delivery, best prices, and a wide selection of products in Nigeria." />
+        <title>Jonbliss Supermarket</title>
+        <meta name="description" content="Your trusted online supermarket" />
         <meta name="keywords" content="supermarket, groceries, online shopping, Nigeria, Jonbliss, food, delivery, household, fresh produce, best prices" />
         <meta name="author" content="Jonbliss Supermarket" />
         <meta property="og:title" content="Jonbliss Supermarket - Online Grocery Shopping in Nigeria" />
@@ -32,7 +48,9 @@ export default function RootLayout({ children }) {
               <main className="pt-20">
                 {children}
               </main>
-              <Footer />
+              <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse"></div>}>
+                <Footer />
+              </Suspense>
             </SupermarketProvider>
           </CartProvider>
         </ErrorBoundary>
